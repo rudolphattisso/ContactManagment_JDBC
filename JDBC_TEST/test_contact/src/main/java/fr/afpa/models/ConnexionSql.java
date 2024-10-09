@@ -6,15 +6,18 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class ConnexionPostgreSql implements ContactDAO{
+import fr.afpa.Contact_2;
 
-    public ArrayList<Contact> getAllContacts() {
+public class ConnexionSql implements CtDao{
 
-        ArrayList <Contact> SqlallContacts= new ArrayList<Contact>();
+@Override
+    public ArrayList<Contact_2> getAllContacts() {
+
+        ArrayList <Contact_2> SqlallContacts= new ArrayList<Contact_2>();
         
     try { 
             // chaîne de connexion à la base de données 
-            String url = "jdbc:postgresql://localhost:3155/contact"; 
+            String url = "jdbc:postgresql://localhost:3055/contact2"; 
             // création d'un objet de la classe "Connection" en utilisant DriverManager 
             Connection con = DriverManager.getConnection(url, "postgres", "B@nLgU4qz*9?D~3n83"); 
             System.out.println("connection etablie");   
@@ -44,7 +47,7 @@ public class ConnexionPostgreSql implements ContactDAO{
                System.out.format("[%d] %s %s\n", id, nom, prenom, genre, dateDeNaissance, pseudo, adresse, 
                telPerso, telPro, mail, codePostale, gitLink); 
 
-                Contact contact = new Contact(id, nom, prenom, genre, dateDeNaissance, pseudo, adresse, telPerso, telPro, mail, codePostale, gitLink);
+                Contact_2 contact = new Contact_2(id, nom, prenom, genre, dateDeNaissance, pseudo, adresse, telPerso, telPro, mail, codePostale, gitLink);
                 SqlallContacts.add(contact);
             } 
            System.out.println(SqlallContacts.toString());
@@ -63,5 +66,14 @@ public class ConnexionPostgreSql implements ContactDAO{
 
     }
 
+@Override
+public void save(Contact_2 contact) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'save'");
+}
+
+
+
+    
 
 }

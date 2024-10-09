@@ -1,4 +1,4 @@
-CREATE TABLE contact(
+CREATE TABLE contacts(
    id SERIAL,
    nom VARCHAR(100)  NOT NULL,
    prenom VARCHAR(200)  NOT NULL,
