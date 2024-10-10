@@ -8,12 +8,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import fr.afpa.App;
-import fr.afpa.models.ConnexionPostgreSql;
+
 import fr.afpa.models.Contact;
-import fr.afpa.models.ContactDAO;
-import fr.afpa.tools.ContactBinarySerializer;
+import fr.afpa.tools.ContactDAO;
 import fr.afpa.tools.ContactJsonSerializer;
 import fr.afpa.tools.VerificationMail;
 import fr.afpa.tools.VerificationUrl;
@@ -31,7 +29,6 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
 
 public class ContactManagementController {
     private ContactDAO contactDAO;
@@ -95,7 +92,7 @@ public class ContactManagementController {
     public void jsonExport(ActionEvent event) {
 
         // Intanciation d'un serializer
-       
+
         ContactJsonSerializer serializer = new ContactJsonSerializer();
 
         // récupération du ou des contacts sélectionné
@@ -135,66 +132,77 @@ public class ContactManagementController {
 
     }
 
-    private ObservableList<Contact> contactsObservableList = FXCollections.observableArrayList(); // Observable liste pour
-                                                                                            // stocker les contacts
+    private ObservableList<Contact> contactsObservableList = FXCollections.observableArrayList(); // Observable liste
+                                                                                                  // pour
+    // stocker les contacts
 
     /**
      * méthode qui se lance dès le lancement du logiciel.
      */
     @FXML
-    public void initialize() {
+    // public void initialize() {
 
-        // Chargement des différents possibles dans la comboBox
-        genreComboBox.getItems().addAll("Homme", "Femme", "Non binaire");
+    // // Chargement des différents possibles dans la comboBox
+    // genreComboBox.getItems().addAll("Homme", "Femme", "Non binaire");
 
-        ContactBinarySerializer binaryDeserializer = new ContactBinarySerializer();
-        
-        // ArrayList<Contact> deserializedContacts = binaryDeserializer.loadList("contact.ser");
+    // // ContactBinarySerializer binaryDeserializer = new
+    // ContactBinarySerializer();
 
-       // condition dans le cas ou la désirialisaton est impossible car le fichier de binaire n'existe pas au premier demarrage de l'application
-       //la condition implique que rien ne doit être fait si le tableau est vide et effectuer l'action si dessous si c'estle contraire.
+    // // ArrayList<Contact> deserializedContacts =
+    // binaryDeserializer.loadList("contact.ser");
 
-        // if(deserializedContacts!=null){
-        //     contactsObservableList.addAll(deserializedContacts);
-        // }
-        
+    // // condition dans le cas ou la désirialisaton est impossible car le fichier
+    // de binaire n'existe pas au premier demarrage de l'application
+    // //la condition implique que rien ne doit être fait si le tableau est vide et
+    // effectuer l'action si dessous si c'estle contraire.
 
-        tableViewContact.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        //instanciation d'un objet de la classe ConnexionPostgreSql qui permettra de recuperer les 
-         //données dans la base de données. Ces données données seront stockées dans une liste de contacts 
+    // // if(deserializedContacts!=null){
+    // // contactsObservableList.addAll(deserializedContacts);
+    // // }
 
-        ConnexionPostgreSql con = new ConnexionPostgreSql();
-       
-        ArrayList<Contact> contacts = con.getAllContacts();
+    // tableViewContact.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    // //instanciation d'un objet de la classe ConnexionPostgreSql qui permettra de
+    // recuperer les
+    // //données dans la base de données. Ces données données seront stockées dans
+    // une liste de contacts
 
-       //  et au final, cette permettra de  rajouter les contacts dans l'observable liste pour le tableau 
-        for (Contact contact : contacts) {
-            contactsObservableList.add(contact);
-        }
-        // création du lien entre l'élement graphique TableView et le
-        // tableau(ObservableList).
-        tableViewContact.setItems(contactsObservableList);
+    // ConnexionPostgreSql con = new ConnexionPostgreSql();
 
-        // La confiiguration d'affichage de chaque cellules
-        colNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
-        colPrenom.setCellValueFactory(cellData -> cellData.getValue().getPrenomProperty());
-        colMail.setCellValueFactory(cellData -> cellData.getValue().getMailProperty());
-        colTel.setCellValueFactory(cellData -> cellData.getValue().getTelPersoProperty());
+    // ArrayList<Contact> contacts = con.getAll();
 
-        prenomField.setText("izhdfz");
-        nomField.setText("izhdfz");
-        adresseField.setText("izhdfz");
-        pseudoField.setText("izhdfz");
-        numPersoField.setText("izhdfz");
-        numProField.setText("izhdfz");
-        mailField.setText("r@50.com");
-        datePicker.setValue(LocalDate.of(1995, 6, 5));
-        lienGitField.setText("https://gemzo.com");
+    // // et au final, cette permettra de rajouter les contacts dans l'observable
+    // liste pour le tableau
+    // for (Contact contact : contacts) {
+    // contactsObservableList.add(contact);
+    // }
+    // // création du lien entre l'élement graphique TableView et le
+    // // tableau(ObservableList).
+    // tableViewContact.setItems(contactsObservableList);
 
-        // Contact contacts = new Contact(0, null, null, null, null, null, null, null, null, null, null, null);
-        // ContactDAO.getAllContacts();
+    // // La confiiguration d'affichage de chaque cellules
+    // colNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
+    // colPrenom.setCellValueFactory(cellData ->
+    // cellData.getValue().getPrenomProperty());
+    // colMail.setCellValueFactory(cellData ->
+    // cellData.getValue().getMailProperty());
+    // colTel.setCellValueFactory(cellData ->
+    // cellData.getValue().getTelPersoProperty());
 
-    }
+    // prenomField.setText("izhdfz");
+    // nomField.setText("izhdfz");
+    // adresseField.setText("izhdfz");
+    // pseudoField.setText("izhdfz");
+    // numPersoField.setText("izhdfz");
+    // numProField.setText("izhdfz");
+    // mailField.setText("r@50.com");
+    // datePicker.setValue(LocalDate.of(1995, 6, 5));
+    // lienGitField.setText("https://gemzo.com");
+
+    // // Contact contacts = new Contact(0, null, null, null, null, null, null,
+    // null, null, null, null, null);
+    // // ContactDAO.getAllContacts();
+
+    // }
 
     /**
      * Méthode permettant rajouter un contact à la liste de contacts;
@@ -206,7 +214,7 @@ public class ContactManagementController {
      *              sur
      *              l'évènement en question
      */
-    @FXML
+    // @FXML
     public void creer(ActionEvent event) {
         // déclaration des variables dans lesquelles seront stockées le contenu de
         // champs
@@ -214,7 +222,7 @@ public class ContactManagementController {
         String mailValide = null;
         String urlValide = null;
 
-        //pour créer les contrainte de synthaxe/format
+        // pour créer les contrainte de synthaxe/format
         String genreSelection = genreComboBox.getSelectionModel().getSelectedItem();
         LocalDate dateSelection = datePicker.getValue();
         String nomRempli = nomField.getText();
@@ -222,33 +230,33 @@ public class ContactManagementController {
         String numRempli = numPersoField.getText();
         String adresseRempli = adresseField.getText();
 
-
-
-
         // processus de verification des champs qui utiliseront les classes qui
         // contiennent*
         // les méthodes de vérificatoin
         Boolean checkMail = VerificationMail.isValidEmail(mailField.getText());
         Boolean checkUrl = VerificationUrl.isValidURL(lienGitField.getText());
-        
-        // cas ou les contenus des champs sont valides. TO DO : contraindre l'ajout du contact si le nom et le prenom ne sont pas renseignés
-        if (checkMail == true && checkUrl == true && genreSelection != null && nomRempli!=null && prenomRempli != null && numRempli != null && adresseRempli != null) {
+
+        // cas ou les contenus des champs sont valides. TO DO : contraindre l'ajout du
+        // contact si le nom et le prenom ne sont pas renseignés
+        if (checkMail == true && checkUrl == true && genreSelection != null && nomRempli != null && prenomRempli != null
+                && numRempli != null && adresseRempli != null) {
             mailValide = mailField.getText();
             urlValide = lienGitField.getText();
             genreSelection = genreComboBox.getSelectionModel().getSelectedItem();
             // dateSelection = datePicker.getValue();
 
-
             // création du contact;
-          //  Contact contact = new Contact(nomField.getText(), prenomField.getText(), genreSelection,
-            //         dateSelection, pseudoField.getText(), adresseField.getText(),
-            //         numPersoField.getText(),
-            //         numProField.getText(), mailValide, adresseField.getText(), urlValide);
+            // Contact contact = new Contact(nomField.getText(), prenomField.getText(),
+            // genreSelection,
+            // dateSelection, pseudoField.getText(), adresseField.getText(),
+            // numPersoField.getText(),
+            // numProField.getText(), mailValide, adresseField.getText(), urlValide);
             // contactsObservableList.add(contact);
 
             // serialisation binaire des contacts:
-            ContactBinarySerializer serializer = new ContactBinarySerializer();
-            serializer.saveList("contact.ser", new ArrayList<Contact>(contactsObservableList));
+            // ContactBinarySerializer serializer = new ContactBinarySerializer();
+            // serializer.saveList("contact.ser", new
+            // ArrayList<Contact>(contactsObservableList));
             // suppression du style CSS qui s'active en cas d'erreur appliqué au champs lors
             // d'une saisie précédente
             mailField.getStyleClass().remove("error-field");
@@ -267,7 +275,7 @@ public class ContactManagementController {
             // cas du formats d'url et mail faux
             tableViewContact.getSelectionModel().clearSelection();
             // tableViewContact.getSelectionModel().selectLast();
-            
+
         } else {
             if (checkMail == false) {
                 mailField.getStyleClass().add("error-field");
@@ -278,7 +286,6 @@ public class ContactManagementController {
             if (genreSelection != "Choix du genre") {
                 genreComboBox.getStyleClass().add("error-field");
             }
-
 
         }
 
@@ -336,11 +343,12 @@ public class ContactManagementController {
                 tableViewContact.getItems().remove(selectedItem);
 
                 // serialisation binaire des contacts:
-                ContactBinarySerializer binarySerializer = new ContactBinarySerializer();
-                binarySerializer.saveList("contact.ser", new ArrayList<Contact>(contactsObservableList));
+                // ContactBinarySerializer binarySerializer = new ContactBinarySerializer();
+                // binarySerializer.saveList("contact.ser", new
+                // ArrayList<Contact>(contactsObservableList));
+                // }
             }
         }
+
     }
-
-
 }

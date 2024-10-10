@@ -40,7 +40,7 @@ public class Contact implements Serializable, Jsonable {
     private SimpleStringProperty lienGit;
 
     public Contact(int id, String nom, String prenom,
-            String genre, LocalDate dateDeNaissance,
+            String genre, LocalDate dateDeNaissance2,
             String pseudo, String adresse,
             String telPerso, String telPro,
             String mail, String codePostale,
@@ -50,7 +50,7 @@ public class Contact implements Serializable, Jsonable {
         this.nom = new SimpleStringProperty(nom);
         this.prenom = new SimpleStringProperty(prenom);
         this.genre = new SimpleStringProperty(genre);
-        this.dateDeNaissance = new SimpleObjectProperty(dateDeNaissance);
+        this.dateDeNaissance = new SimpleObjectProperty(dateDeNaissance2);
         this.pseudo = new SimpleStringProperty(pseudo);
         this.adresse = new SimpleStringProperty(adresse);
         this.telPerso = new SimpleStringProperty(telPerso);

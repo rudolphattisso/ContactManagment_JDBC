@@ -1,10 +1,10 @@
+package fr.afpa.tools;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class Singleton_Connexion {
-    
-    public class ConnectionPostgreSQL{
+public class ConnectionPostgreSQL {
 
     /**
      * URL de connexion
@@ -22,24 +22,33 @@ public class Singleton_Connexion {
      * Objet Connexion
      */
     private static Connection connect;
-    
+
     /**
      * Méthode qui va nous retourner notre instance
      * et la créer si elle n'existe pas...
+     * 
      * @return
      */
-    public static Connection getInstance(){
-        if(connect == null){
+    public static Connection getInstance() {
+        if (connect == null) {
             try {
                 connect = DriverManager.getConnection(url, user, passwd);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }        
-        return connect;    
-    }    
-}
+        }
+        return connect;
+
+    }
+
+    public static void close() {
+
+        try {
+            connect.close();
+        } catch (SQLException e) {
+            // TODO logger
+            e.printStackTrace();
+        }
+    }
 
 }
-
-
