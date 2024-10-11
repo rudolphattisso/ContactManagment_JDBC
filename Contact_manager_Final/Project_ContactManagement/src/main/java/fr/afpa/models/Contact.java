@@ -26,11 +26,11 @@ public class Contact implements Serializable, Jsonable {
 
     // SimpleStringProperty est utilisé pour mettre automiquement l'interface
     // graphique à jour(TableView) à chaque modification de la String
-    private int id;   
+    private int id;
     private SimpleStringProperty nom;
     private SimpleStringProperty prenom;
     private SimpleStringProperty genre;
-    private ObjectProperty <LocalDate> dateDeNaissance;
+    private ObjectProperty<LocalDate> dateDeNaissance;
     private SimpleStringProperty pseudo;
     private SimpleStringProperty adresse;
     private SimpleStringProperty telPerso;
@@ -46,7 +46,28 @@ public class Contact implements Serializable, Jsonable {
             String mail, String codePostale,
             String lienGit) {
 
-        this.id = id;        
+        this.id = id;
+        this.nom = new SimpleStringProperty(nom);
+        this.prenom = new SimpleStringProperty(prenom);
+        this.genre = new SimpleStringProperty(genre);
+        this.dateDeNaissance = new SimpleObjectProperty(dateDeNaissance2);
+        this.pseudo = new SimpleStringProperty(pseudo);
+        this.adresse = new SimpleStringProperty(adresse);
+        this.telPerso = new SimpleStringProperty(telPerso);
+        this.telPro = new SimpleStringProperty(telPro);
+        this.mail = new SimpleStringProperty(mail);
+        this.codePostale = new SimpleStringProperty(codePostale);
+        this.lienGit = new SimpleStringProperty(lienGit);
+    }
+
+    public Contact( String nom, String prenom,
+            String genre, LocalDate dateDeNaissance2,
+            String pseudo, String adresse,
+            String telPerso, String telPro,
+            String mail, String codePostale,
+            String lienGit) {
+
+        
         this.nom = new SimpleStringProperty(nom);
         this.prenom = new SimpleStringProperty(prenom);
         this.genre = new SimpleStringProperty(genre);
@@ -68,12 +89,9 @@ public class Contact implements Serializable, Jsonable {
                 + "]";
     }
 
-    
-
     public int getId() {
         return id;
     }
-
 
     public String getNom() {
         return nom.getValue();// pour obtenir un String; car l'attribut à été déclaré en SimpleString
@@ -100,10 +118,10 @@ public class Contact implements Serializable, Jsonable {
         return genre;
     }
 
-
     public ObjectProperty getDateDeNaissanceProperty() {
         return dateDeNaissance;
     }
+
     public LocalDate getDateDeNaissance() {
         return dateDeNaissance.getValue();
     }
@@ -167,7 +185,7 @@ public class Contact implements Serializable, Jsonable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public void setNom(String nom) {
         this.nom.setValue(nom); // changer la valeur du string property
     }
@@ -234,7 +252,7 @@ public class Contact implements Serializable, Jsonable {
         // ne sait pas sérialiser les objets de la classe "LocalDate"
         LocalDate dateNaissance = this.getDateDeNaissance();
         jsonObject.put("date_de_naissance", dateNaissance.toString());
-        
+
         jsonObject.put("pseudo", this.getPseudo());
         jsonObject.put("adresse", this.getAdresse());
         jsonObject.put("telPerso", this.getTelPerso());
@@ -276,10 +294,10 @@ public class Contact implements Serializable, Jsonable {
             mail = new SimpleStringProperty((String) in.readObject());
             codePostale = new SimpleStringProperty((String) in.readObject());
             lienGit = new SimpleStringProperty((String) in.readObject());
-            
+
         } catch (ClassNotFoundException e) {
             logger.debug(e.getMessage());
-        } 
+        }
     }
 
     public String toVCard() {

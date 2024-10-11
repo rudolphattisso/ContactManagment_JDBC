@@ -25,46 +25,41 @@ import fr.afpa.tools.ContactDAO;
  */
 public class App extends Application {
 
-    // private static Scene scene;
+    private static Scene scene;
 
-    // @Override
-    // public void start(Stage stage) throws IOException {
-    //     scene = new Scene(loadFXML("contactManagementDatePicker"), 1024, 768);
-    //     stage.setScene(scene);
-    //     stage.show();
+    @Override
+    public void start(Stage stage) throws IOException {
+        scene = new Scene(loadFXML("contactManagementDatePicker"), 1024, 768);
+        stage.setScene(scene);
+        stage.show();
 
-    //     //  TITLE IN STAGE 
-    //     stage.setTitle("Gestion de la liste des contacts");
+        //  TITLE IN STAGE 
+        stage.setTitle("Gestion de la liste des contacts");
 
-    // //     // ICON
-    //     Image icon = new Image(getClass().getResourceAsStream("contacts.png"));
-    //     stage.getIcons().add(icon); // Add icon in stage
-    // }
+    //     // ICON
+        Image icon = new Image(getClass().getResourceAsStream("contacts.png"));
+        stage.getIcons().add(icon); // Add icon in stage
+    }
 
-    // static void setRoot(String fxml) throws IOException {
-    //     scene.setRoot(loadFXML(fxml));
-    // }
+    static void setRoot(String fxml) throws IOException {
+        scene.setRoot(loadFXML(fxml));
+    }
 
-    // private static Parent loadFXML(String fxml) throws IOException {
-    //     FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-    //     return fxmlLoader.load();
-    // }
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
 
     public static void main(String[] args) {
         
 
-        ContactDAO ctDAO = new ContactDAO();
-        Contact reiz = new Contact(0, "STYLESHEET_CASPIsAN", "zer", "pdfe", LocalDate.parse("2023-03-27"), "zor", "zibala", "popo", "zingaba", "usop", "kounda", "perfecto");
-        ctDAO.add(reiz);;
+        // ContactDAO ctDAO = new ContactDAO();
+        // Contact reiz = new Contact(10, "CASPIsAN", "zer", "pdfe", LocalDate.parse("2023-03-27"), "zor", "zibala", "popo", "zingaba", "usop", "kounda", "perfecto");
+        // ctDAO.update(reiz);
 
-        // launch();
+        launch();
         
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'start'");
-    }
 
 }

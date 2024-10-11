@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import fr.afpa.App;
+import fr.afpa.App; 
 import fr.afpa.models.Contact;
 
 
@@ -63,13 +63,13 @@ public class ContactDAO extends Dao<Contact> {
                 // telPerso, telPro, mail, codePostale, gitLink);
 
             }
-            // fermeture des ressources
-            stm.close();
-            result.close();
-            con.close();
+            // fermeture des ressources; Cependant les fermutures ont été fermées car lors de l'utilisation de l'application cela ferme la connection à la base de donnée.
+            // stm.close();
+            // result.close();
+            // con.close();
         } catch (Exception e) {
-            System.err.println("Error");
-            System.err.println(e.getMessage());
+            logger.error(e.getMessage());
+        
         }
         // throw new UnsupportedOperationException("Unimplemented method 'getAll'");
         // }
@@ -109,8 +109,8 @@ public class ContactDAO extends Dao<Contact> {
                 Contact contact = new Contact(idContact, nom, prenom, genre, dateDeNaissance, pseudo, adresse, telPerso,
                         telPro, mail, codePostale, gitLink);
 
-                stm.close();
-                con.close();
+                // stm.close();
+                // con.close();
                 System.out.println(contact);
                 return contact;
             }
@@ -147,19 +147,20 @@ public class ContactDAO extends Dao<Contact> {
             stm.setString(10, contact.getCodePostale()); // code_postale
             stm.setString(11, contact.getLienGit()); // git_link
 
-            stm.execute();
-            stm.close();
-            con.close();
+            logger.info(stm);
 
-            System.out.println("le contact "+ contact.getNom()+ " " + contact.getPrenom() + "à été rajouté");
-        } catch (Exception e) {
-            System.out.println("Error");
-            System.out.println(e.getMessage());
+            stm.execute();
+            // stm.close();
+            // con.close();
+
+            System.out.println("le contact "+ contact.getNom()+ " " + contact.getPrenom() + " a été rajouté");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
         }
     }
 
     
-    @Override  
+// méthode propre à la classe
     public boolean deleteBySurnameAndFirstName(String surName, String firstName){
         try {
             // cas de la connexion avec singleton
@@ -172,8 +173,8 @@ public class ContactDAO extends Dao<Contact> {
             stm.setString(1, surName);
             stm.setString(2, firstName);
             stm.execute();
-            stm.close();
-            con.close();
+            // stm.close();
+            // con.close();
             
             System.out.println(
                     "le contact dont les nom et prenoms sont: " + surName + " " + firstName + " a bien été supprimé");
@@ -196,8 +197,8 @@ public class ContactDAO extends Dao<Contact> {
             stm.setLong(1, id);
             
             stm.execute();
-            stm.close();
-            con.close();
+            // stm.close();
+            // con.close();
             System.out.println("le contact dont l'id es " + id + " a bien été supprimé");
             return true;
             
@@ -208,20 +209,32 @@ public class ContactDAO extends Dao<Contact> {
     }
     
     @Override
-    public boolean update(int id, String surName) {
+    public boolean update(Contact contact) {
         try {
             Connection con = ConnectionPostgreSQL.getInstance();
-            String sql = "UPDATE contacts  SET nom = ? WHERE  id = ? ";
+            String sql = "UPDATE contacts  SET tel_perso=?,code_postale=?,pseudo=?,addresse=?,nom=?,git_link=?,prenom=?,date_de_naissance=?,tel_pro=?,mail=?,genre=? WHERE id=?";
             PreparedStatement stm = con.prepareStatement(sql);
-
-            stm.setInt(2, id);
-            stm.setString(1, surName);
+            
+            //l'ordre est fait en fonction des colones dans la requete SQL ci-dessus;
+            stm.setString(1, contact.getTelPerso());
+            stm.setString(2, contact.getCodePostale());
+            stm.setString(3, contact.getPseudo());
+            stm.setString(4, contact.getAdresse());
+            stm.setString(5, contact.getNom());
+            stm.setString(6, contact.getLienGit());
+            stm.setString(7, contact.getPrenom());
+            //Convertir la local Date java en Date SQL
+            stm.setDate(8, Date.valueOf(contact.getDateDeNaissance()));
+            stm.setString(9, contact.getTelPro());
+            stm.setString(10, contact.getMail());
+            stm.setString(11, contact.getGenre());
+            stm.setInt(12, contact.getId());
 
             stm.execute();
-            stm.close();
-            con.close();
+            // stm.close();
+            // con.close();
 
-            System.out.println("le contact dont le nomest : " + surName + " a bien été modifié");
+            System.out.println("le contact dont le nomest : " + contact.getNom() + " a bien été modifié");
            
             return true;
 

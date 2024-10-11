@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import fr.afpa.App;
 
 import fr.afpa.models.Contact;
+import fr.afpa.tools.ConnectionPostgreSQL;
 import fr.afpa.tools.ContactDAO;
 import fr.afpa.tools.ContactJsonSerializer;
 import fr.afpa.tools.VerificationMail;
@@ -140,69 +141,54 @@ public class ContactManagementController {
      * méthode qui se lance dès le lancement du logiciel.
      */
     @FXML
-    // public void initialize() {
+    public void initialize() {
 
-    // // Chargement des différents possibles dans la comboBox
-    // genreComboBox.getItems().addAll("Homme", "Femme", "Non binaire");
+        // Chargement des différents possibilités dans la comboBox
+        genreComboBox.getItems().addAll("Homme", "Femme", "Non binaire");
 
-    // // ContactBinarySerializer binaryDeserializer = new
-    // ContactBinarySerializer();
 
-    // // ArrayList<Contact> deserializedContacts =
-    // binaryDeserializer.loadList("contact.ser");
 
-    // // condition dans le cas ou la désirialisaton est impossible car le fichier
-    // de binaire n'existe pas au premier demarrage de l'application
-    // //la condition implique que rien ne doit être fait si le tableau est vide et
-    // effectuer l'action si dessous si c'estle contraire.
+        tableViewContact.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        // instanciation d'un objet de la classe ConnexionPostgreSql qui permettra de
+        // recuperer les données dans la base de données. Ces données données seront
+        // stockées dans une liste de contacts
 
-    // // if(deserializedContacts!=null){
-    // // contactsObservableList.addAll(deserializedContacts);
-    // // }
+        
+        ContactDAO contactDAO = new ContactDAO(); 
 
-    // tableViewContact.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-    // //instanciation d'un objet de la classe ConnexionPostgreSql qui permettra de
-    // recuperer les
-    // //données dans la base de données. Ces données données seront stockées dans
-    // une liste de contacts
+        // Initialisation récupération de la liste de  contact dans la base de donnée avec la méthode getAll
+        List<Contact> contacts = contactDAO.getAll();
 
-    // ConnexionPostgreSql con = new ConnexionPostgreSql();
+        // et au final, cette permettra de rajouter les contacts dans l'observable
+        // liste pour le tableau
+        for (Contact contact : contacts) {
+            contactsObservableList.add(contact);
+        }
+        // création du lien entre l'élement graphique TableView et le
+        // tableau(ObservableList).
+        tableViewContact.setItems(contactsObservableList);
 
-    // ArrayList<Contact> contacts = con.getAll();
+        // La confiiguration d'affichage de chaque cellules
+        colNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
+        colPrenom.setCellValueFactory(cellData -> cellData.getValue().getPrenomProperty());
+        colMail.setCellValueFactory(cellData -> cellData.getValue().getMailProperty());
+        colTel.setCellValueFactory(cellData -> cellData.getValue().getTelPersoProperty());
 
-    // // et au final, cette permettra de rajouter les contacts dans l'observable
-    // liste pour le tableau
-    // for (Contact contact : contacts) {
-    // contactsObservableList.add(contact);
-    // }
-    // // création du lien entre l'élement graphique TableView et le
-    // // tableau(ObservableList).
-    // tableViewContact.setItems(contactsObservableList);
+        prenomField.setText("izhdfz");
+        nomField.setText("izhdfz");
+        adresseField.setText("izhdfz");
+        pseudoField.setText("izhdfz");
+        numPersoField.setText("izhdfz");
+        numProField.setText("izhdfz");
+        mailField.setText("r@50.com");
+        datePicker.setValue(LocalDate.of(1995, 6, 5));
+        lienGitField.setText("https://gemzo.com");
 
-    // // La confiiguration d'affichage de chaque cellules
-    // colNom.setCellValueFactory(cellData -> cellData.getValue().getNomProperty());
-    // colPrenom.setCellValueFactory(cellData ->
-    // cellData.getValue().getPrenomProperty());
-    // colMail.setCellValueFactory(cellData ->
-    // cellData.getValue().getMailProperty());
-    // colTel.setCellValueFactory(cellData ->
-    // cellData.getValue().getTelPersoProperty());
+        // Contact contacts = new Contact(0, null, null, null, null, null, null,
+        // null, null, null, null, null);
+        // ContactDAO.getAllContacts();
 
-    // prenomField.setText("izhdfz");
-    // nomField.setText("izhdfz");
-    // adresseField.setText("izhdfz");
-    // pseudoField.setText("izhdfz");
-    // numPersoField.setText("izhdfz");
-    // numProField.setText("izhdfz");
-    // mailField.setText("r@50.com");
-    // datePicker.setValue(LocalDate.of(1995, 6, 5));
-    // lienGitField.setText("https://gemzo.com");
-
-    // // Contact contacts = new Contact(0, null, null, null, null, null, null,
-    // null, null, null, null, null);
-    // // ContactDAO.getAllContacts();
-
-    // }
+    }
 
     /**
      * Méthode permettant rajouter un contact à la liste de contacts;
@@ -214,11 +200,11 @@ public class ContactManagementController {
      *              sur
      *              l'évènement en question
      */
+
     // @FXML
     public void creer(ActionEvent event) {
-        // déclaration des variables dans lesquelles seront stockées le contenu de
-        // champs
-        // mail et url avant vérification.
+        // déclaration des variables dans lesquelles seront stockées le contenu de champs mail et url avant vérification.
+       
         String mailValide = null;
         String urlValide = null;
 
@@ -230,9 +216,7 @@ public class ContactManagementController {
         String numRempli = numPersoField.getText();
         String adresseRempli = adresseField.getText();
 
-        // processus de verification des champs qui utiliseront les classes qui
-        // contiennent*
-        // les méthodes de vérificatoin
+        // processus de verification des champs qui utiliseront les classes qui contiennent les méthodes de vérificatoin
         Boolean checkMail = VerificationMail.isValidEmail(mailField.getText());
         Boolean checkUrl = VerificationUrl.isValidURL(lienGitField.getText());
 
@@ -243,22 +227,20 @@ public class ContactManagementController {
             mailValide = mailField.getText();
             urlValide = lienGitField.getText();
             genreSelection = genreComboBox.getSelectionModel().getSelectedItem();
-            // dateSelection = datePicker.getValue();
+            dateSelection = datePicker.getValue();
 
             // création du contact;
-            // Contact contact = new Contact(nomField.getText(), prenomField.getText(),
-            // genreSelection,
-            // dateSelection, pseudoField.getText(), adresseField.getText(),
-            // numPersoField.getText(),
-            // numProField.getText(), mailValide, adresseField.getText(), urlValide);
-            // contactsObservableList.add(contact);
+            Contact contact = new Contact(nomField.getText(), prenomField.getText(),genreSelection, dateSelection, pseudoField.getText(), adresseField.getText(), numPersoField.getText(),numProField.getText(), mailValide, adresseField.getText(), urlValide);
+            contactsObservableList.add(contact);
 
-            // serialisation binaire des contacts:
-            // ContactBinarySerializer serializer = new ContactBinarySerializer();
-            // serializer.saveList("contact.ser", new
+            // Connexion à la base de donnée puis appel de la méthode d'ajout de contact dans la base de données.
+            ContactDAO contactDAO = new ContactDAO();       
+            contactDAO.add(contact);
+            
             // ArrayList<Contact>(contactsObservableList));
+
             // suppression du style CSS qui s'active en cas d'erreur appliqué au champs lors
-            // d'une saisie précédente
+            //d'une saisie précédente
             mailField.getStyleClass().remove("error-field");
             lienGitField.getStyleClass().remove("error-field");
             // retirer supprimer les infos des champs après ajout du contact

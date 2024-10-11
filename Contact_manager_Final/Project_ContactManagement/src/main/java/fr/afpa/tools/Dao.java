@@ -41,18 +41,16 @@ public abstract class Dao<T> {
      */
     public abstract boolean deleteById(long id);
     
-    /**
-     * Permet la suppression d'une entrée de la base par id
-     * 
-     * @param obj
-     */
-    public abstract boolean deleteBySurnameAndFirstName(String surName, String firstName);
-    
+
     /**
      * Permet de mettre à jour les données d'une entrée dans la base
      * 
      * @param obj
      */
-    public abstract boolean update(int id, String surName);
+
+     //dans l'objet Object il y aura l'id donc pas besoin de le mmettre en paramètres
+    // public abstract boolean update(int id, String Surname);
+    
+    public abstract boolean update( T object);
     
 }
