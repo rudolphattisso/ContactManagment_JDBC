@@ -57,11 +57,6 @@ public class ContactDAO extends Dao<Contact> {
                 System.out.println(sqlAllContacts);
                 
 
-                // affichage du résultat
-                // System.out.format("[%d] %s %s\n", id, nom, prenom, genre, dateDeNaissance,
-                // pseudo, adresse,
-                // telPerso, telPro, mail, codePostale, gitLink);
-
             }
             // fermeture des ressources; Cependant les fermutures ont été fermées car lors de l'utilisation de l'application cela ferme la connection à la base de donnée.
             // stm.close();

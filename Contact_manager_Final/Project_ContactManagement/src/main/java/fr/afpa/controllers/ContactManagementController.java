@@ -283,10 +283,20 @@ public class ContactManagementController {
      */
     @FXML
     public void modifier(ActionEvent event) {
+        //recupération de la méthode Modifier dans contactDAO;
+        ContactDAO contactDAO = new ContactDAO();
+        
         // selection du contact dans la liste et stockage dans une variable
         Contact selectedContact = tableViewContact.getSelectionModel().getSelectedItem();
-        // suppression du contact:
+        
+        // suppression du contact dans la tableview:
         tableViewContact.getItems().remove(selectedContact);
+        // suppression du contact dans la BDD
+            //stockage variables qui serviront à la suppression du contact dans la BDD
+        String surname = selectedContact.getNom();
+        String firstname = selectedContact.getPrenom();
+            //
+        contactDAO.deleteBySurnameAndFirstName(surname, firstname);
         // envoi des valeur du contacts dans les champs:
         nomField.setText(selectedContact.getNom());
         prenomField.setText(selectedContact.getPrenom());
@@ -299,7 +309,11 @@ public class ContactManagementController {
         numProField.setText(selectedContact.getTelPro());
         mailField.setText(selectedContact.getMail());
         lienGitField.setText(selectedContact.getLienGit());
+        //modification des élements dans la bdd
 
+        contactDAO.update(selectedContact);
+
+        
     }
 
     /**
@@ -313,6 +327,9 @@ public class ContactManagementController {
     @FXML
     public void supprimer(ActionEvent event) {
 
+        ContactDAO contactDAO =  new ContactDAO();
+        
+
         Contact selectedItem = tableViewContact.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             // Boîte de dialogue de confirmation
@@ -322,13 +339,18 @@ public class ContactManagementController {
             alert.setContentText("Cette action est irréversible.");
 
             if (alert.showAndWait().get() == ButtonType.OK) {
+                       //stockage des éléments du contact selectedItem pour recupere le nom 
+            // et prenom qui sont le attribut qui permettrons d'utiliser la fonction delete.
+     
+                String nom = selectedItem.getNom();
+                String prenom = selectedItem.getPrenom();
+                // suppression du contact depuis la base de donnée
+                contactDAO.deleteBySurnameAndFirstName(nom, prenom);
+                // suppression du contact dans la tableview
                 tableViewContact.getItems().remove(selectedItem);
 
-                // serialisation binaire des contacts:
-                // ContactBinarySerializer binarySerializer = new ContactBinarySerializer();
-                // binarySerializer.saveList("contact.ser", new
-                // ArrayList<Contact>(contactsObservableList));
-                // }
+                
+
             }
         }
 
